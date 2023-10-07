@@ -1,68 +1,45 @@
 import React, { useState } from "react";
+import classes from './CalcForm.module.css';
 
 const initialCalcData = {
-    currentSavings: 10000,
-    yearlySavings: 1200,
-    interest: 7,
-    duration: 10
+    'current-savings': 10000,
+    'yearly-contribution': 1200,
+    'expected-return': 7,
+    'duration': 10
 }
 
 const CalcForm = (props) => {
-    const [enteredCurrentSavings, setEnteredCurrentSavings] = useState(initialCalcData.currentSavings);
-    const [enteredYearlySavings, setEnteredYearlySavings] = useState(initialCalcData.yearlySavings);
-    const [enteredInterest, setEnteredInterest] = useState(initialCalcData.interest);
-    const [enteredDuration, setEnteredDuration] = useState(initialCalcData.duration);
 
-    const currentSavingsChangeHandler = (e) => {
-        setEnteredCurrentSavings(e.target.value);
-    }
-
-    const yearlySavingsChangeHandler = (e) => {
-        setEnteredYearlySavings(e.target.value);
-    }
-
-    const interestChangeHandler = (e) => {
-        setEnteredInterest(e.target.value);
-    }
-
-    const durationChangeHandler = (e) => {
-        setEnteredDuration(e.target.value);
-    }
+    const [calcData, setCalcData] = useState(initialCalcData);
 
     const resetHandler = () => {
-        setEnteredCurrentSavings(enteredCurrentSavings);
-        setEnteredYearlySavings(enteredYearlySavings);
-        setEnteredInterest(enteredInterest);
-        setEnteredDuration(enteredDuration);
+        setCalcData(initialCalcData);
     }
 
     const submitHandler = (e) => {
         e.preventDefault();
-        const calcData = {
-            currentSavings: enteredCurrentSavings,    
-            yearlySavings: enteredYearlySavings,    
-            interest: enteredInterest,    
-            duration: enteredDuration,    
-        };
-
         props.onSaveCalcData(calcData);
+    }
 
-        setEnteredCurrentSavings('');
-        setEnteredYearlySavings('');
-        setEnteredInterest('');
-        setEnteredDuration('');
+    const inputChangeHandler = (input, value) => {
+        setCalcData((prevInput) => {
+            return {
+                ...prevInput,
+                [input]: +value,
+            };
+        })
     }
 
     return(
-        <form className="form" onSubmit={submitHandler}>
+        <form className={classes.form} onSubmit={submitHandler}>
             <div className="input-group">
                 <p>
                     <label htmlFor="current-savings">Current Savings ($)</label>
-                    <input type="number" id="current-savings" onChange={currentSavingsChangeHandler} />
+                    <input type="number" id="current-savings" value={calcData['current-savings']} onChange={(e) => inputChangeHandler('current-savings', e.target.value)} />
                 </p>
                 <p>
                     <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
-                    <input type="number" id="yearly-contribution" onChange={yearlySavingsChangeHandler} />
+                    <input type="number" id="yearly-contribution" value={calcData['yearly-contribution']} onChange={(e) => inputChangeHandler('yearly-contribution', e.target.value)} />
                 </p>
             </div>
             <div className="input-group">
@@ -70,11 +47,11 @@ const CalcForm = (props) => {
                     <label htmlFor="expected-return">
                     Expected Interest (%, per year)
                     </label>
-                    <input type="number" id="expected-return" onChange={interestChangeHandler} />
+                    <input type="number" id="expected-return" value={calcData['expected-return']} onChange={(e) => inputChangeHandler('expected-return', e.target.value)} />
                 </p>
                 <p>
                     <label htmlFor="duration">Investment Duration (years)</label>
-                    <input type="number" id="duration" onChange={durationChangeHandler} />
+                    <input type="number" id="duration" value={calcData['duration']} onChange={(e) => inputChangeHandler('duration', e.target.value)} />
                 </p>
             </div>
             <p className="actions">
