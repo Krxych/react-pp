@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import AddUser from './components/AddUser';
 import UsersList from './components/UsersList';
-import ErrorModal from './components/ErrorModal';
 
 const dataArr = [];
 
@@ -18,7 +17,6 @@ function App() {
     <div>
       <AddUser onSumbitForm={addUserHandler} />
       <UsersList data={formData} />
-      <ErrorModal/>
     </div>
   );
 }
