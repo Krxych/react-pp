@@ -1,9 +1,11 @@
 import React from "react";
+import ReactDOM from "react-dom";
+
 import Card from "../UI/Card";
 
-const ErrorModal = (props) => {
+const Modal = props => {
     return (
-        <div className="modal-screen" onClick={props.onConfirm}>
+        <div className="modal-screen">
             <Card className="modal">
                 <div className="modal-title">
                     <h3>{props.title}</h3>
@@ -17,7 +19,14 @@ const ErrorModal = (props) => {
             </Card>
         </div>
     );
+}
 
+const ErrorModal = (props) => {
+    return (
+        <React.Fragment>
+            {ReactDOM.createPortal(<Modal title={props.title} message={props.message} onConfirm={props.onConfirm} onClick={props.onConfirm}/>, document.getElementById('modal-root'))}
+        </React.Fragment>
+    );
 }
 
 export default ErrorModal;
